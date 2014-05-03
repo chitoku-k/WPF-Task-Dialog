@@ -17,6 +17,8 @@ namespace TaskDialogInterop
 		internal const uint WM_SETICON = 0x0080;
 		internal const int WS_SYSMENU = 0x00080000;
 		internal const int WS_EX_DLGMODALFRAME = 0x0001;
+		internal const int ICON_SMALL = 0;
+		internal const int ICON_BIG = 1;
 
 		[DllImport("user32.dll")]
 		internal extern static int SetWindowLong(IntPtr hwnd, int index, int value);

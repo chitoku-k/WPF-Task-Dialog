@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Interop;
 
 namespace TaskDialogInterop
 {
@@ -19,8 +20,8 @@ namespace TaskDialogInterop
 		/// <param name="showCloseButton"><c>true</c> to show the close button; otherwise, <c>false</c></param>
 		public static void SetWindowCloseButtonVisibility(Window window, bool showCloseButton)
 		{
-			System.Windows.Interop.WindowInteropHelper wih = new System.Windows.Interop.WindowInteropHelper(window);
-			
+			WindowInteropHelper wih = new WindowInteropHelper(window);
+
 			int style = NativeMethods.GetWindowLong(wih.Handle, NativeMethods.GWL_STYLE);
 
 			if (showCloseButton)
@@ -35,40 +36,28 @@ namespace TaskDialogInterop
 		/// <param name="showIcon"><c>true</c> to show the icon in the caption; otherwise, <c>false</c></param>
 		public static void SetWindowIconVisibility(Window window, bool showIcon)
 		{
-			System.Windows.Interop.WindowInteropHelper wih = new System.Windows.Interop.WindowInteropHelper(window);
+			WindowInteropHelper wih = new WindowInteropHelper(window);
 
-			// For Vista/7 and higher
-			if (Environment.OSVersion.Version.Major >= 6)
+			IntPtr icon;
+			int style = NativeMethods.GetWindowLong(wih.Handle, NativeMethods.GWL_EXSTYLE);
+
+			if (showIcon)
 			{
-				// Change the extended window style
-				if (showIcon)
-				{
-					int extendedStyle = NativeMethods.GetWindowLong(wih.Handle, NativeMethods.GWL_EXSTYLE);
-					NativeMethods.SetWindowLong(wih.Handle, NativeMethods.GWL_EXSTYLE, extendedStyle | ~NativeMethods.WS_EX_DLGMODALFRAME);
-				}
-				else
-				{
-					int extendedStyle = NativeMethods.GetWindowLong(wih.Handle, NativeMethods.GWL_EXSTYLE);
-					NativeMethods.SetWindowLong(wih.Handle, NativeMethods.GWL_EXSTYLE, extendedStyle | NativeMethods.WS_EX_DLGMODALFRAME);
-				}
-
-				// Update the window's non-client area to reflect the changes
-				NativeMethods.SetWindowPos(wih.Handle, IntPtr.Zero, 0, 0, 0, 0,
-					NativeMethods.SWP_NOMOVE | NativeMethods.SWP_NOSIZE | NativeMethods.SWP_NOZORDER | NativeMethods.SWP_FRAMECHANGED);
+				style |= ~NativeMethods.WS_EX_DLGMODALFRAME;
+				icon = NativeMethods.DefWindowProc(wih.Handle, NativeMethods.WM_SETICON, new IntPtr(0), IntPtr.Zero);
 			}
-			// For XP and older
-			// TODO Setting Window Icon visibility doesn't work in XP
 			else
 			{
-				// 0 - ICON_SMALL (caption bar)
-				// 1 - ICON_BIG   (alt-tab)
-
-				if (showIcon)
-					NativeMethods.SendMessage(wih.Handle, NativeMethods.WM_SETICON, new IntPtr(0),
-						NativeMethods.DefWindowProc(wih.Handle, NativeMethods.WM_SETICON, new IntPtr(0), IntPtr.Zero));
-				else
-					NativeMethods.SendMessage(wih.Handle, NativeMethods.WM_SETICON, new IntPtr(0), IntPtr.Zero);
+				style |= NativeMethods.WS_EX_DLGMODALFRAME;
+				icon = IntPtr.Zero;
 			}
+
+			NativeMethods.SetWindowLong(wih.Handle, NativeMethods.GWL_EXSTYLE, style);
+			NativeMethods.SendMessage(wih.Handle, NativeMethods.WM_SETICON, (IntPtr)NativeMethods.ICON_SMALL, icon);
+			NativeMethods.SendMessage(wih.Handle, NativeMethods.WM_SETICON, (IntPtr)NativeMethods.ICON_BIG, icon);
+
+			NativeMethods.SetWindowPos(wih.Handle, IntPtr.Zero, 0, 0, 0, 0,
+				NativeMethods.SWP_NOMOVE | NativeMethods.SWP_NOSIZE | NativeMethods.SWP_NOZORDER | NativeMethods.SWP_FRAMECHANGED);
 		}
 	}
 }

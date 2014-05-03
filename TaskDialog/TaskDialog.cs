@@ -19,67 +19,28 @@ namespace TaskDialogInterop
 		internal const int RadioButtonIDOffset = 1000;
 		internal const int CustomButtonIDOffset = 500;
 
-		/// <summary>
-		/// Gets or sets the localized OK button text. Use the underline "_" for accelerator keys.
-		/// </summary>
-		public static string LocalizedOK { get; set; }
-		/// <summary>
-		/// Gets or sets the localized Cancel button text. Use the underline "_" for accelerator keys.
-		/// </summary>
-		public static string LocalizedCancel { get; set; }
-		/// <summary>
-		/// Gets or sets the localized Yes button text. Use the underline "_" for accelerator keys.
-		/// </summary>
-		public static string LocalizedYes { get; set; }
-		/// <summary>
-		/// Gets or sets the localized No button text. Use the underline "_" for accelerator keys.
-		/// </summary>
-		public static string LocalizedNo { get; set; }
-		/// <summary>
-		/// Gets or sets the localized Retry button text. Use the underline "_" for accelerator keys.
-		/// </summary>
-		public static string LocalizedRetry { get; set; }
-		/// <summary>
-		/// Gets or sets the localized Close button text. Use the underline "_" for accelerator keys.
-		/// </summary>
-		public static string LocalizedClose { get; set; }
-		/// <summary>
-		/// Gets or sets the localized Show Details button text. Use the underline "_" for accelerator keys.
-		/// </summary>
-		public static string LocalizedShowDetails { get; set; }
-		/// <summary>
-		/// Gets or sets the localized Hide Details button text. Use the underline "_" for accelerator keys.
-		/// </summary>
-		public static string LocalizedHideDetails { get; set; }
+		private static TaskDialogLocalizationOptions _localizedOptions;
 
-		internal static string GetLocalizedButtonText(VistaTaskDialogCommonButtons commonButton)
+		/// <summary>
+		/// Gets or sets the localized texts.
+		/// </summary>
+		public static TaskDialogLocalizationOptions LocalizedOptions
 		{
-			switch (commonButton)
+			get
 			{
-				case VistaTaskDialogCommonButtons.OK:
-					return LocalizedOK ?? "_" + commonButton.ToString();
-				case VistaTaskDialogCommonButtons.Cancel:
-					return LocalizedCancel ?? "_" + commonButton.ToString();
-				case VistaTaskDialogCommonButtons.Yes:
-					return LocalizedYes ?? "_" + commonButton.ToString();
-				case VistaTaskDialogCommonButtons.No:
-					return LocalizedNo ?? "_" + commonButton.ToString();
-				case VistaTaskDialogCommonButtons.Retry:
-					return LocalizedRetry ?? "_" + commonButton.ToString();
-				case VistaTaskDialogCommonButtons.Close:
-					return LocalizedClose ?? "_" + commonButton.ToString();
+				return _localizedOptions ?? (_localizedOptions = new TaskDialogLocalizationOptions
+				{
+					Ok = "OK",
+					Cancel = "Cancel",
+					Yes = "Yes",
+					No = "No",
+					Retry = "Retry",
+					Close = "Close",
+					ShowDetails = "Show Details",
+					HideDetails = "Hide Details"
+				});
 			}
-			return commonButton.ToString();
-		}
-
-		internal static string GetLocalizedShowDetailsText()
-		{
-			return LocalizedShowDetails ?? "Show details";
-		}
-
-		internal static string GetLocalizedHideDetailsText()
-		{
-			return LocalizedShowDetails ?? "Hide details";
+			set { _localizedOptions = value; }
 		}
 
 		/// <summary>
@@ -631,6 +592,7 @@ namespace TaskDialogInterop
 		internal static TaskDialogButtonData ConvertCommonButton(VistaTaskDialogCommonButtons commonButton, System.Windows.Input.ICommand command = null, bool isDefault = false, bool isCancel = false)
 		{
 			int id = 0;
+			string text = "";
 
 			switch (commonButton)
 			{
@@ -640,25 +602,31 @@ namespace TaskDialogInterop
 					break;
 				case VistaTaskDialogCommonButtons.OK:
 					id = (int)TaskDialogSimpleResult.Ok;
+					text = LocalizedOptions.Ok;
 					break;
 				case VistaTaskDialogCommonButtons.Yes:
 					id = (int)TaskDialogSimpleResult.Yes;
+					text = LocalizedOptions.Yes;
 					break;
 				case VistaTaskDialogCommonButtons.No:
 					id = (int)TaskDialogSimpleResult.No;
+					text = LocalizedOptions.No;
 					break;
 				case VistaTaskDialogCommonButtons.Cancel:
 					id = (int)TaskDialogSimpleResult.Cancel;
+					text = LocalizedOptions.Cancel;
 					break;
 				case VistaTaskDialogCommonButtons.Retry:
 					id = (int)TaskDialogSimpleResult.Retry;
+					text = LocalizedOptions.Retry;
 					break;
 				case VistaTaskDialogCommonButtons.Close:
 					id = (int)TaskDialogSimpleResult.Close;
+					text = LocalizedOptions.Close;
 					break;
 			}
 
-			return new TaskDialogButtonData(id, GetLocalizedButtonText(commonButton), command, isDefault, isCancel);
+			return new TaskDialogButtonData(id, text, command, isDefault, isCancel);
 		}
 
 		/// <summary>
@@ -807,8 +775,8 @@ namespace TaskDialogInterop
 			vtd.UseCommandLinksNoIcon = false;
 			vtd.VerificationText = options.VerificationText;
 			vtd.VerificationFlagChecked = options.VerificationByDefault;
-			vtd.ExpandedControlText = LocalizedHideDetails;
-			vtd.CollapsedControlText = GetLocalizedShowDetailsText();
+			vtd.ExpandedControlText = LocalizedOptions.HideDetails;
+			vtd.CollapsedControlText = LocalizedOptions.ShowDetails;
 			vtd.Callback = options.Callback;
 			vtd.CallbackData = options.CallbackData;
 			vtd.Config = options;
@@ -886,8 +854,8 @@ namespace TaskDialogInterop
 			}
 			//else if (diagResult >= RadioButtonIDOffset)
 			//{
-			//    simpResult = (TaskDialogSimpleResult)diagResult;
-			//    radioButtonResult = diagResult - RadioButtonIDOffset;
+			//	simpResult = (TaskDialogSimpleResult)diagResult;
+			//	radioButtonResult = diagResult - RadioButtonIDOffset;
 			//}
 			else if (diagResult >= CustomButtonIDOffset)
 			{
