@@ -43,7 +43,7 @@ namespace TaskDialogInterop
 
 			if (showIcon)
 			{
-				style |= ~NativeMethods.WS_EX_DLGMODALFRAME;
+				style &= ~NativeMethods.WS_EX_DLGMODALFRAME;
 				icon = NativeMethods.DefWindowProc(wih.Handle, NativeMethods.WM_SETICON, new IntPtr(0), IntPtr.Zero);
 			}
 			else
