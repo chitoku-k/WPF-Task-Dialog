@@ -38,18 +38,13 @@ namespace TaskDialogInterop
 		{
 			WindowInteropHelper wih = new WindowInteropHelper(window);
 
-			IntPtr icon;
-			int style = NativeMethods.GetWindowLong(wih.Handle, NativeMethods.GWL_EXSTYLE);
+			IntPtr icon = IntPtr.Zero;
+			int style = NativeMethods.GetWindowLong(wih.Handle, NativeMethods.GWL_EXSTYLE) | NativeMethods.WS_EX_DLGMODALFRAME;
 
 			if (showIcon)
 			{
 				style &= ~NativeMethods.WS_EX_DLGMODALFRAME;
 				icon = NativeMethods.DefWindowProc(wih.Handle, NativeMethods.WM_SETICON, new IntPtr(0), IntPtr.Zero);
-			}
-			else
-			{
-				style |= NativeMethods.WS_EX_DLGMODALFRAME;
-				icon = IntPtr.Zero;
 			}
 
 			NativeMethods.SetWindowLong(wih.Handle, NativeMethods.GWL_EXSTYLE, style);

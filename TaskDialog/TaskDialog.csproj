@@ -71,6 +71,7 @@
     </Compile>
     <Compile Include="TaskDialogEvents.cs" />
     <Compile Include="TaskDialogInterop.cs" />
+    <Compile Include="TaskDialogLocalizationOptions.cs" />
     <Compile Include="TaskDialogResult.cs" />
     <Compile Include="TaskDialogTypes.cs" />
     <Compile Include="TaskDialogViewModel.cs" />
