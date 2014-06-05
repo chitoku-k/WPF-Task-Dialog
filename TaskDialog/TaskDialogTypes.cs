@@ -35,25 +35,29 @@ namespace TaskDialogInterop
 		/// </summary>
 		Close = 1,
 		/// <summary>
+		/// The message box displays a OK button.
+		/// </summary>
+		Ok = 2,
+		/// <summary>
 		/// The message box displays Yes and No buttons.
 		/// </summary>
-		YesNo = 2,
+		YesNo = 3,
 		/// <summary>
 		/// The message box displays Yes, No, and Cancel buttons.
 		/// </summary>
-		YesNoCancel = 3,
+		YesNoCancel = 4,
 		/// <summary>
 		/// The message box displays OK and Cancel buttons.
 		/// </summary>
-		OKCancel = 4,
+		OkCancel = 5,
 		/// <summary>
 		/// The message box displays Retry and Cancel buttons.
 		/// </summary>
-		RetryCancel = 5,
+		RetryCancel = 6,
 		/// <summary>
 		/// The message box displays a Cancel button.
 		/// </summary>
-		Cancel = 6
+		Cancel = 7
 	}
 	/// <summary>
 	/// Defines configuration options for showing a task dialog.

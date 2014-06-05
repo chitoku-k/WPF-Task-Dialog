@@ -465,7 +465,7 @@ namespace TaskDialogInterop
 					{
 						_normalButtons = new List<TaskDialogButtonData>();
 						_normalButtons.Add(new TaskDialogButtonData(
-							(int)VistaTaskDialogCommonButtons.OK,
+							(int)VistaTaskDialogCommonButtons.Ok,
 							TaskDialog.LocalizedOptions.Ok,
 							NormalButtonCommand,
 							true, true));

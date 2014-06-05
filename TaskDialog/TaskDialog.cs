@@ -408,11 +408,13 @@ namespace TaskDialogInterop
 					index = -1;
 					break;
 				case TaskDialogCommonButtons.Close:
+				case TaskDialogCommonButtons.Ok:
+				case TaskDialogCommonButtons.Cancel:
 					index = 0;
 					break;
-				case TaskDialogCommonButtons.OKCancel:
+				case TaskDialogCommonButtons.OkCancel:
 					if (buttonId == (int)TaskDialogSimpleResult.Ok
-						|| buttonId == (int)VistaTaskDialogCommonButtons.OK)
+						|| buttonId == (int)VistaTaskDialogCommonButtons.Ok)
 						index = 0;
 					else if (buttonId == (int)TaskDialogSimpleResult.Cancel
 						|| buttonId == (int)VistaTaskDialogCommonButtons.Cancel)
@@ -445,9 +447,6 @@ namespace TaskDialogInterop
 						|| buttonId == (int)VistaTaskDialogCommonButtons.Cancel)
 						index = 2;
 					break;
-				case TaskDialogCommonButtons.Cancel:
-					index = 0;
-					break;
 			}
 
 			return index;
@@ -473,9 +472,9 @@ namespace TaskDialogInterop
 					//get the value right since there is only one button anyway
 					buttonId = 0;
 					break;
-				case TaskDialogCommonButtons.OKCancel:
+				case TaskDialogCommonButtons.OkCancel:
 					if (index == 0)
-						buttonId = (int)VistaTaskDialogCommonButtons.OK;
+						buttonId = (int)VistaTaskDialogCommonButtons.Ok;
 					else if (index == 1)
 						buttonId = (int)VistaTaskDialogCommonButtons.Cancel;
 					else
@@ -570,8 +569,11 @@ namespace TaskDialogInterop
 				case TaskDialogCommonButtons.Close:
 					vtdCommonButtons = VistaTaskDialogCommonButtons.Close;
 					break;
-				case TaskDialogCommonButtons.OKCancel:
-					vtdCommonButtons = VistaTaskDialogCommonButtons.OK | VistaTaskDialogCommonButtons.Cancel;
+				case TaskDialogCommonButtons.Ok:
+					vtdCommonButtons = VistaTaskDialogCommonButtons.Ok;
+					break;
+				case TaskDialogCommonButtons.OkCancel:
+					vtdCommonButtons = VistaTaskDialogCommonButtons.Ok | VistaTaskDialogCommonButtons.Cancel;
 					break;
 				case TaskDialogCommonButtons.RetryCancel:
 					vtdCommonButtons = VistaTaskDialogCommonButtons.Retry | VistaTaskDialogCommonButtons.Cancel;
@@ -600,7 +602,7 @@ namespace TaskDialogInterop
 				case VistaTaskDialogCommonButtons.None:
 					id = (int)TaskDialogSimpleResult.None;
 					break;
-				case VistaTaskDialogCommonButtons.OK:
+				case VistaTaskDialogCommonButtons.Ok:
 					id = (int)TaskDialogSimpleResult.Ok;
 					text = LocalizedOptions.Ok;
 					break;
@@ -760,7 +762,7 @@ namespace TaskDialogInterop
 				|| hasCustomCancel
 				|| options.CommonButtons == TaskDialogCommonButtons.Close
 				|| options.CommonButtons == TaskDialogCommonButtons.Cancel
-				|| options.CommonButtons == TaskDialogCommonButtons.OKCancel
+				|| options.CommonButtons == TaskDialogCommonButtons.OkCancel
 				|| options.CommonButtons == TaskDialogCommonButtons.YesNoCancel);
 			vtd.CallbackTimer = options.EnableCallbackTimer;
 			vtd.ExpandedByDefault = options.ExpandedByDefault;

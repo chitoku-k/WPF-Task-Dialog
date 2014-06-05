@@ -21,7 +21,7 @@ namespace TaskDialogInterop
 		/// <summary>
 		/// OK common button. If selected Task Dialog will return DialogResult.OK.
 		/// </summary>
-		OK = 0x0001,
+		Ok = 0x0001,
 		/// <summary>
 		/// Yes common button. If selected Task Dialog will return DialogResult.Yes.
 		/// </summary>
@@ -70,7 +70,7 @@ namespace TaskDialogInterop
 		/// <summary>
 		/// Shield icon.
 		/// </summary>
-		Shield = 0xFFFC, // MAKEINTRESOURCEW(-4)
+		Shield = 0xFFFC // MAKEINTRESOURCEW(-4)
 	}
 
   /// <summary>

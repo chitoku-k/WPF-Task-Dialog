@@ -150,7 +150,7 @@
 										   UseLayoutRounding="True"
 										   RenderOptions.BitmapScalingMode="NearestNeighbor"/>
 									<TextBlock x:Name="ShowDetailsLabel"
-											   Text="{Binding LocalizedShowDetails, Mode=OneWay}"
+											   Text="{Binding ShowDetails, Source={x:Static local:TaskDialog.LocalizedOptions}}"
 											   Margin="8,0,0,0"
 											   HorizontalAlignment="Left" VerticalAlignment="Center"/>
 								</StackPanel>
@@ -171,10 +171,10 @@
 									</MultiTrigger>
 									<Trigger Property="IsChecked" Value="True">
 										<Setter TargetName="ShowDetailsArrow" Property="Source" Value="{DynamicResource ExpArrUp1}"/>
-										<Setter TargetName="ShowDetailsLabel" Property="Text" Value="{Binding LocalizedHideDetails, Mode=OneWay}"/>
+                                        <Setter TargetName="ShowDetailsLabel" Property="Text" Value="{Binding HideDetails, Source={x:Static local:TaskDialog.LocalizedOptions}}"/>
 									</Trigger>
 									<Trigger Property="IsChecked" Value="False">
-										<Setter TargetName="ShowDetailsLabel" Property="Text" Value="{Binding LocalizedShowDetails, Mode=OneWay}"/>
+                                        <Setter TargetName="ShowDetailsLabel" Property="Text" Value="{Binding ShowDetails, Source={x:Static local:TaskDialog.LocalizedOptions}}"/>
 									</Trigger>
 									<MultiTrigger>
 										<MultiTrigger.Conditions>
